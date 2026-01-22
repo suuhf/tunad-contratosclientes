@@ -30,6 +30,7 @@
         }
 
         .header {
+            position: relative;
             background: var(--preto);
             padding: 30px;
             border-radius: 15px;
@@ -638,6 +639,9 @@
             <h2>Contratos de Clientes</h2>
             <div class="date" id="currentDate"></div>
         </div>
+
+            
+
     </div>
 
     <div class="kpi-container">
@@ -661,6 +665,9 @@
             <div class="kpi-value" id="clientesRisco">0</div>
             <div class="kpi-subtitle">Alto potencial de churn</div>
         </div>
+
+            
+
     </div>
 
     <div class="filters">
@@ -688,6 +695,9 @@
                 <option value="seguro">Seguro</option>
             </select>
         </div>
+
+            
+
     </div>
 
     <div class="table-container">
@@ -718,6 +728,9 @@
                 <button class="pagination-btn" id="btnNext" onclick="nextPage()">Próxima →</button>
             </div>
         </div>
+
+            
+
     </div>
 
     <div class="dashboard-grid">
@@ -733,6 +746,9 @@
             <h3>Top 10 - Contratos Vencendo</h3>
             <div id="topVencendo"></div>
         </div>
+
+            
+
     </div>
 
     <div class="dashboard-grid two-cols">
@@ -744,6 +760,9 @@
             <h3>Distribuição de Serviços</h3>
             <div id="distribuicaoServicos"></div>
         </div>
+
+            
+
     </div>
 
     <div id="clienteModal" class="modal">
@@ -757,17 +776,147 @@
             </div>
             <div class="modal-body" id="modalBody"></div>
         </div>
+
+            
+
     </div>
 
     <script>
-    const clientesData = [{"CONTRATO ATÉ": "2026-03-01 00:00:00", "CLIENTE": "BET365", "AGÊNCIA": "Betc HAVAS", "Valor/mês": 57000, "Tipo de Contrato": "Atribuição", "Sync": "Não", "Report Mensal": "Sim", "Report Semanal": "Sim", "Market Insights": "Sim", "API": "Sim", "OBSERVAÇÕES": "20/01 TROCANDO E-MAILS ESCLARECENDO DÚVIDAS SOBRE EXTRAÇÃO DE CSV NA PLATAFORMA E CONTATO VIA WHATSAPP.", "ABERTURA DE REPORT": "2 de 13", "QUEM ABRIU": "Kevin Silva", "Valor_Limpo": 57000.0, "Abertura_Parsed": {"abertos": 2, "total": 13, "percentual": 15.384615384615385}}, {"CONTRATO ATÉ": "2026-03-01 00:00:00", "CLIENTE": "BURGER KING | ZAMP", "AGÊNCIA": "ALMAP", "Valor/mês": 40000, "Tipo de Contrato": "Atribuição", "Sync": "Não", "Report Mensal": "Sim", "Report Semanal": "Sim", "Market Insights": "Sim", "API": "Sim", "OBSERVAÇÕES": "15/01 REUNIÃO GABRIELA TUCCI CONFIGURAÇÃO E DÚVIDAS SOBRE APPSFLYER. ACOMPANHANDO, POIS TEM PREVISÃO DE CAMPANHA NO INÍCIO DE FEVEREIRO", "ABERTURA DE REPORT": "2 de 10", "QUEM ABRIU": "José Machado, Gabriela Tucci\n", "Valor_Limpo": 40000.0, "Abertura_Parsed": {"abertos": 2, "total": 10, "percentual": 20.0}}, {"CONTRATO ATÉ": "2026-01-01 00:00:00", "CLIENTE": "CIELO", "AGÊNCIA": "ALMAP", "Valor/mês": "Valores não encontrados", "Tipo de Contrato": "Atribuição", "Sync": "Sim", "Report Mensal": "Sim", "Report Semanal": "Sim", "Market Insights": "Sim", "API": "Sim", "OBSERVAÇÕES": "FOLLOW DESDE O INÍCIO DO ANO, DIA 19/01 CAMILA, PESSOA NOVA DE MÍDIA QUE VAI FICAR NA LINHA DE FRENTE, MANDOU DÚVIDAS E AGENDAMOS CALL PARA DIA 22/01. ESTOU EM CIMA, POIS PRECISAM USAR PARA VIRAR O CONTRATO ANUAL. VI A OPORTUNIDADE DE CRIAR O REPORT SOMENTE DOS PATROCÍNIOS NO PROGRAMA PEQUENAS EMPRESAS GRANDES NEGOCIOS", "ABERTURA DE REPORT": "4 de 11", "QUEM ABRIU": "Regiane Silva, Willian Se, Gustavo Olivo, Lucas Turquetto", "Valor_Limpo": 0.0, "Abertura_Parsed": {"abertos": 4, "total": 11, "percentual": 36.36363636363637}}, {"CONTRATO ATÉ": "2025-12-01 00:00:00", "CLIENTE": "CLARO", "AGÊNCIA": "TALENT", "Valor/mês": "Valores não encontrados", "Tipo de Contrato": "Atribuição", "Sync": "Sim", "Report Mensal": "Sim", "Report Semanal": "Sim", "Market Insights": "Sim", "API": "Sim", "OBSERVAÇÕES": "FELIPE BORGES DA TALENT ESTÁ SEMPRE EM CONTATO, PREFERE FALAR PELO WHATSAPP, EN 19/01 PEDIU TOKEN PARA CONFIGURAR API, JÁ CONFIGUREI CAMPANHA PARA QUE ELE APRESENTE PARA A CLARO E ME PEDIU 2 ACESSOS PARA O CLIENTE FINAL DO ANO PASSADO. PRÓXIMO PASSO É ORGANIZAR OS TREINAMENTOS", "ABERTURA DE REPORT": "0 de 2", "QUEM ABRIU": "Vitor Kamada, Felipe Borges", "Valor_Limpo": 0.0, "Abertura_Parsed": {"abertos": 0, "total": 2, "percentual": 0.0}}, {"CONTRATO ATÉ": "2026-05-01 00:00:00", "CLIENTE": "CONSÓRCIO SERVOPA", "AGÊNCIA": "SENSO PERFORMANCE", "Valor/mês": "Valores não encontrados", "Tipo de Contrato": "Sync", "Sync": "Sim", "Report Mensal": "Não", "Report Semanal": "Não", "Market Insights": "Não", "API": "Não", "OBSERVAÇÕES": "12/01 ENSINEI A CONFIGURAÇÃO DO SYNC, ELES ESTÃO EXPERIMENTANDO E PENSANDO EM ESTRATÉGIA VÃO USAR. O OBJETIVO É ACOMPANHAR O CONCORRENTE ADEMICON NO BBB26. MAS TAMBÉM VÃO PEGAR OUTRAS CAMPANHAS DE ADEMICON. NOVO FOLLOW EM 20/01. GOSTARAM TANTO QUE JÁ EMPLACARAM OUTRO CLIENTE COM A GENTE O VERO INTERNET", "ABERTURA DE REPORT": "0 de 0", "QUEM ABRIU": "-", "Valor_Limpo": 0.0, "Abertura_Parsed": {"abertos": 0, "total": 0, "percentual": 0}}, {"CONTRATO ATÉ": "2025-06-01 00:00:00", "CLIENTE": "ESTÁCIO", "AGÊNCIA": "ARTPLAN | CADASTRA", "Valor/mês": 13775, "Tipo de Contrato": "Atribuição", "Sync": "Sim", "Report Mensal": "Não", "Report Semanal": "Sim", "Market Insights": "Não", "API": "Não", "OBSERVAÇÕES": "09/01 RODANDO CAMPANHA WYDEN, PRAÇA MANAUS E ACOMPANHAMENTO DAS AÇÕES DE ESTÁCIO DENTRO DO BBB26, COM ENVIO DE REPORTS. CONTATO QUASE QUE DIÁRIO DESDE SEMANA PASSADA.", "ABERTURA DE REPORT": "3 de 9", "QUEM ABRIU": "Erica Martins, Mídia Estácio, Adelson Tuche", "Valor_Limpo": 13775.0, "Abertura_Parsed": {"abertos": 3, "total": 9, "percentual": 33.33333333333333}}, {"CONTRATO ATÉ": "2026-01-01 00:00:00", "CLIENTE": "GDB (SUPERBET)", "AGÊNCIA": "ANTIGA ROIX", "Valor/mês": 1200, "Tipo de Contrato": "Sync", "Sync": "Sim", "Report Mensal": "Não", "Report Semanal": "Não", "Market Insights": "Não", "API": "Não", "OBSERVAÇÕES": "13/01 JÚLIA MANDOU PI, TIREI DÚVIDAS. TIVEMOS UM BUG NO CARREGAMENTO E SALVAMENTO DO TRIGGER, MAS EDINHO FEZ UMA SOLUÇÃO PALEATIVA E SEGUE INVESTIGANDO O QUE FOI. 20/01 TRIGGER FUNCIONANDO", "ABERTURA DE REPORT": "0 de 0", "QUEM ABRIU": "-", "Valor_Limpo": 1200.0, "Abertura_Parsed": {"abertos": 0, "total": 0, "percentual": 0}}, {"CONTRATO ATÉ": "2026-01-01 00:00:00", "CLIENTE": "GDB (SADIA)", "AGÊNCIA": "ANTIGA ROIX", "Valor/mês": 1200, "Tipo de Contrato": "Sync", "Sync": "Sim", "Report Mensal": "Não", "Report Semanal": "Não", "Market Insights": "Não", "API": "Não", "OBSERVAÇÕES": "20/01 FOLLOW COM SABRINA, POIS TEM QUE ENVIAR A PI. ELA TAMBÉM ESTÁ VENDO INTERNAMENTE SOBRE A CONFIGURAÇÃO DO META", "ABERTURA DE REPORT": "0 de 0", "QUEM ABRIU": "-", "Valor_Limpo": 1200.0, "Abertura_Parsed": {"abertos": 0, "total": 0, "percentual": 0}}, {"CONTRATO ATÉ": "2026-05-01 00:00:00", "CLIENTE": "GETNET", "AGÊNCIA": "W3HAUS | CAPSULA", "Valor/mês": 10000, "Tipo de Contrato": "Atribuição", "Sync": "Não", "Report Mensal": "Sim", "Report Semanal": "Não", "Market Insights": "Não", "API": "Não", "OBSERVAÇÕES": "05/01 KELLY ENVIOU OS COMPROVANTES REFERENTE ÀS CAMPANHAS DE TESTEMUNHAL DAS RÁDIOS DE DEZEMBRO, FIZEMOS E ENVIAMOS O REPORT. 16/01 ANA DE FÉRIAS, RETORNOU SEMANA PASSADA E ESTAMOS AGENDADAS DIA 22/01 PARA PASSAR FEEDBACKS SOBRE OS REPORTS ENVIADOS", "ABERTURA DE REPORT": "0 de 0", "QUEM ABRIU": "-", "Valor_Limpo": 10000.0, "Abertura_Parsed": {"abertos": 0, "total": 0, "percentual": 0}}, {"CONTRATO ATÉ": "2026-01-01 00:00:00", "CLIENTE": "GOL", "AGÊNCIA": "ALMAP", "Valor/mês": NaN, "Tipo de Contrato": "Report único", "Sync": "Não", "Report Mensal": "Não", "Report Semanal": "Não", "Market Insights": "Não", "API": "Não", "OBSERVAÇÕES": "19/01 RICARDO FALOU COM LUCAS TURQUETTO, POIS LÁ DENTRO DA AGÊNCIA ELES NÃO SABEM DIZER COMO VAI FICAR O ANO.", "ABERTURA DE REPORT": "0 de 0", "QUEM ABRIU": "-", "Valor_Limpo": 0.0, "Abertura_Parsed": {"abertos": 0, "total": 0, "percentual": 0}}, {"CONTRATO ATÉ": "2025-12-01 00:00:00", "CLIENTE": "GRUPO RIC", "AGÊNCIA": "NÃO TEM", "Valor/mês": 6500, "Tipo de Contrato": "Atribuição", "Sync": "Não", "Report Mensal": "Não", "Report Semanal": "Não", "Market Insights": "Não", "API": "Não", "OBSERVAÇÕES": "15/01/2026 – MARCOS STAICHAKA ENVIOU E-MAIL CANCELANDO O CONTRATO. MAIOR PARTE DOS CLIENTES DELE SÃO DE MÉDIO E PEQUENO PORTE E NÃO ESTÃO CONSEGUINDO OBTER AS INFORMAÇÕES DEVIDO AO BAIXO VOLUME DE BUSCAS.", "ABERTURA DE REPORT": "0 de 0", "QUEM ABRIU": "-", "Valor_Limpo": 6500.0, "Abertura_Parsed": {"abertos": 0, "total": 0, "percentual": 0}}, {"CONTRATO ATÉ": "2026-01-01 00:00:00", "CLIENTE": "HYUNDAI MOTOR BRASIL", "AGÊNCIA": "INNOCEAN", "Valor/mês": 15000, "Tipo de Contrato": "Atribuição", "Sync": "Sim", "Report Mensal": "Sim", "Report Semanal": "Sim", "Market Insights": "Não", "API": "Não", "OBSERVAÇÕES": "06/01 PEGUEI BRIEFING COM SELVA PARA O REPORT MENSAL E EM 19/01 EM CONTATO COM DANIEL QUE ESTÁ COBRINDO AS FÉRIAS DA SELVA", "ABERTURA DE REPORT": "0 de 12", "QUEM ABRIU": "-", "Valor_Limpo": 15000.0, "Abertura_Parsed": {"abertos": 0, "total": 12, "percentual": 0.0}}, {"CONTRATO ATÉ": "Rotativo", "CLIENTE": "IMMAKERS (SADIA)", "AGÊNCIA": "IMMAKERS", "Valor/mês": 3000, "Tipo de Contrato": "Sync", "Sync": "Sim", "Report Mensal": "Não", "Report Semanal": "Não", "Market Insights": "Não", "API": "Não", "OBSERVAÇÕES": "", "ABERTURA DE REPORT": "0 de 0", "QUEM ABRIU": "-", "Valor_Limpo": 3000.0, "Abertura_Parsed": {"abertos": 0, "total": 0, "percentual": 0}}, {"CONTRATO ATÉ": "2025-07-01 00:00:00", "CLIENTE": "LOCALIZA", "AGÊNCIA": "NÃO TEM", "Valor/mês": 15000, "Tipo de Contrato": "Atribuição", "Sync": "Não", "Report Mensal": "Sim", "Report Semanal": "Não", "Market Insights": "Não", "API": "Não", "OBSERVAÇÕES": "", "ABERTURA DE REPORT": "2 de 9", "QUEM ABRIU": "-", "Valor_Limpo": 15000.0, "Abertura_Parsed": {"abertos": 2, "total": 9, "percentual": 22.22222222222222}}, {"CONTRATO ATÉ": "2026-05-01 00:00:00", "CLIENTE": "MERCADO LIVRE | MERCADO PAGO", "AGÊNCIA": "GUT", "Valor/mês": 45000, "Tipo de Contrato": "Atribuição", "Sync": "Sim", "Report Mensal": "Sim", "Report Semanal": "Sim", "Market Insights": "Sim", "API": "Sim", "OBSERVAÇÕES": "", "ABERTURA DE REPORT": "6 de 15", "QUEM ABRIU": "Nataly Goes, Mídia Meli, Daniel Amorim, Thaís Sampaio, Carolina Stival, Vitoria Vvaz", "Valor_Limpo": 45000.0, "Abertura_Parsed": {"abertos": 6, "total": 15, "percentual": 40.0}}, {"CONTRATO ATÉ": "2025-12-01 00:00:00", "CLIENTE": "NIO", "AGÊNCIA": "BTN", "Valor/mês": 5000, "Tipo de Contrato": "Atribuição", "Sync": "Não", "Report Mensal": "Não", "Report Semanal": "Sim", "Market Insights": "Não", "API": "Não", "OBSERVAÇÕES": "FOI UMA EXPERIÊNCIA FEITA DIRETAMETNE COM BTN, ONDE NÓS LANÇAMOS AS INSERÇÕES DOS BOLETINS DE UM CLIENE DELES, NIO E AVALIAMOS OS RESULTADOS. 16/01 RICARDO FEZ CALL COM ELES PARA APRESENTAR O REPORT E GOSTARAM BASTANTE. 20/01 RICARDO VENDO COM ARTHUR SOBRE AJUSTES NO REPORT", "ABERTURA DE REPORT": "0 de 0", "QUEM ABRIU": "-", "Valor_Limpo": 5000.0, "Abertura_Parsed": {"abertos": 0, "total": 0, "percentual": 0}}, {"CONTRATO ATÉ": "2025-12-01 00:00:00", "CLIENTE": "PAGSEGURO / UOL", "AGÊNCIA": "NÃO TEM", "Valor/mês": 15700, "Tipo de Contrato": "Atribuição", "Sync": "Não", "Report Mensal": "Não", "Report Semanal": "Não", "Market Insights": "Sim", "API": "Não", "OBSERVAÇÕES": "O CONTRATO DELES É MAIS ANTIGO E POR ISSO TEM O MODELO SAS, MENSALMENTE FAZEMOS O ACOMPANHAMENTO DE 1 CAMPANHA DE RÁDIO, MAS OS REPORTS SÃO ELES MESMO QUE FAZEM. ÚLTIMO FOLLOW 20/01. ELES NÃO TIVERAM CAMPANHA EM DEZEMBRO E JANEIRO AINDA ESTÁ EM ABERTO. PENDENTE ANDRÉ RETORNAR PRO RICARDO E ALÊ SOBRE RENOVAÇÃO. 05/01/2026 - Ricardo autorizou manter aberto acesso até 31/01/2026, enquando consolida renovação do contrato.", "ABERTURA DE REPORT": "0 de 0", "QUEM ABRIU": "-", "Valor_Limpo": 15700.0, "Abertura_Parsed": {"abertos": 0, "total": 0, "percentual": 0}}, {"CONTRATO ATÉ": "2025-12-01 00:00:00", "CLIENTE": "PUBLISET (CNPJ SEGUROS)", "AGÊNCIA": "PUBLISET", "Valor/mês": NaN, "Tipo de Contrato": "Atribuição", "Sync": "Sim", "Report Mensal": "Não", "Report Semanal": "Não", "Market Insights": "Sim", "API": "Não", "OBSERVAÇÕES": "ACOMPANHAMENTO DE CAMPANHA FEITA PELA PUBLISET", "ABERTURA DE REPORT": "0 de 0", "QUEM ABRIU": "-", "Valor_Limpo": 0.0, "Abertura_Parsed": {"abertos": 0, "total": 0, "percentual": 0}}, {"CONTRATO ATÉ": "2025-12-01 00:00:00", "CLIENTE": "PUBLISET (EDITORA SIMETRIA)", "AGÊNCIA": "PUBLISET", "Valor/mês": 3589.65, "Tipo de Contrato": "Atribuição", "Sync": "Sim", "Report Mensal": "Não", "Report Semanal": "Não", "Market Insights": "Sim", "API": "Não", "OBSERVAÇÕES": "ACOMPANHAMENTO DE CAMPANHA FEITA PELA PUBLISET", "ABERTURA DE REPORT": "0 de 0", "QUEM ABRIU": "-", "Valor_Limpo": 3589.65, "Abertura_Parsed": {"abertos": 0, "total": 0, "percentual": 0}}, {"CONTRATO ATÉ": "2026-01-01 00:00:00", "CLIENTE": "PUBLISET (FATAL MODEL)", "AGÊNCIA": "PUBLISET", "Valor/mês": 5068.34, "Tipo de Contrato": "Atribuição", "Sync": "Sim", "Report Mensal": "Não", "Report Semanal": "Não", "Market Insights": "Sim", "API": "Não", "OBSERVAÇÕES": "PAULO SOLICITOU CHECKING DE VÍDEO. 19/01 PENDENTE ELE APROVAR O ACRÉSCIMO DE VALOR E PASSAR OS DADOS DA CAMPANHA", "ABERTURA DE REPORT": "0 de 0", "QUEM ABRIU": "-", "Valor_Limpo": 5068.34, "Abertura_Parsed": {"abertos": 0, "total": 0, "percentual": 0}}, {"CONTRATO ATÉ": "2025-12-01 00:00:00", "CLIENTE": "PUBLISET (HUGHESNET)", "AGÊNCIA": "PUBLISET", "Valor/mês": 5535.26, "Tipo de Contrato": "Atribuição", "Sync": "Sim", "Report Mensal": "Não", "Report Semanal": "Não", "Market Insights": "Sim", "API": "Não", "OBSERVAÇÕES": "ACOMPANHAMENTO DE CAMPANHA FEITA PELA PUBLISET", "ABERTURA DE REPORT": "0 de 0", "QUEM ABRIU": "-", "Valor_Limpo": 5535.26, "Abertura_Parsed": {"abertos": 0, "total": 0, "percentual": 0}}, {"CONTRATO ATÉ": "2025-12-01 00:00:00", "CLIENTE": "PUBLISET (OCEANO)", "AGÊNCIA": "PUBLISET", "Valor/mês": NaN, "Tipo de Contrato": "Atribuição", "Sync": "Sim", "Report Mensal": "Não", "Report Semanal": "Não", "Market Insights": "Sim", "API": "Não", "OBSERVAÇÕES": "RICARDO QUE TRATA COM ELES E PUBLISET", "ABERTURA DE REPORT": "0 de 0", "QUEM ABRIU": "-", "Valor_Limpo": 0.0, "Abertura_Parsed": {"abertos": 0, "total": 0, "percentual": 0}}, {"CONTRATO ATÉ": "2025-12-01 00:00:00", "CLIENTE": "PUBLISET (UNIDAS)", "AGÊNCIA": "PUBLISET", "Valor/mês": 5347.3, "Tipo de Contrato": "Atribuição", "Sync": "Sim", "Report Mensal": "Não", "Report Semanal": "Não", "Market Insights": "Sim", "API": "Não", "OBSERVAÇÕES": "RICARDO QUE TRATA COM ELES E PUBLISET", "ABERTURA DE REPORT": "0 de 0", "QUEM ABRIU": "-", "Valor_Limpo": 5347.3, "Abertura_Parsed": {"abertos": 0, "total": 0, "percentual": 0}}, {"CONTRATO ATÉ": "2025-12-01 00:00:00", "CLIENTE": "PUBLISET (VERO INTERNET)", "AGÊNCIA": "PUBLISET", "Valor/mês": NaN, "Tipo de Contrato": "Atribuição", "Sync": "Sim", "Report Mensal": "Não", "Report Semanal": "Não", "Market Insights": "Sim", "API": "Não", "OBSERVAÇÕES": "RICARDO QUE TRATA COM ELES E PUBLISET", "ABERTURA DE REPORT": "0 de 0", "QUEM ABRIU": "-", "Valor_Limpo": 0.0, "Abertura_Parsed": {"abertos": 0, "total": 0, "percentual": 0}}, {"CONTRATO ATÉ": "2026-01-01 00:00:00", "CLIENTE": "RENAULT", "AGÊNCIA": "DPZ", "Valor/mês": 30000, "Tipo de Contrato": "Atribuição", "Sync": "Sim", "Report Mensal": "Sim", "Report Semanal": "Sim", "Market Insights": "Sim", "API": "Sim", "OBSERVAÇÕES": "O REPORT FINAL JÁ FOI ENCAMINHADO, ESTAMOS EM FASE DE RENOVAÇÃO, VAMOS FAZER UM COMPARATIVO COM O PERÍODO QUE TEVE X O QUE NÃO TEVE CAMPANHA E O MARKET INSIGHTS.", "ABERTURA DE REPORT": "0 de 5", "QUEM ABRIU": "-", "Valor_Limpo": 30000.0, "Abertura_Parsed": {"abertos": 0, "total": 5, "percentual": 0.0}}, {"CONTRATO ATÉ": "2026-03-01 00:00:00", "CLIENTE": "RECORD", "AGÊNCIA": "NÃO TEM", "Valor/mês": 35000, "Tipo de Contrato": "Atribuição", "Sync": "Sim", "Report Mensal": "Sim", "Report Semanal": "Não", "Market Insights": "Não", "API": "Sim", "OBSERVAÇÕES": "PARA 2026 FICAMOS COM ACESSO ABERTO ATÉ MARÇO, PARA QUE AVALIEM SE VÃO RENOVAR ANUAL DE NOVO, EM FUNÇÃO DA QUESTÃO DA DIFICULDADE DE ANALISAR QUANDO SÃO CLIENTES COM POUCAS BUSCAS (MESMO CASO DE GRUPO RIC), FOLLOWS PRINCIPALMENTE COM ISAQUE QUE É QUEM USA, MAS ELE NÃO ESTÁ RESPONDENDO ESSE ANO AINDA. MAS ELE FAZ OS REPORTS INTERNAMENTE SOZINHO TAMBÉM. 20/01 OUTRO FOLLOW POR WHATSAPP", "ABERTURA DE REPORT": "0 de 4", "QUEM ABRIU": "-", "Valor_Limpo": 35000.0, "Abertura_Parsed": {"abertos": 0, "total": 4, "percentual": 0.0}}, {"CONTRATO ATÉ": "2026-01-01 00:00:00", "CLIENTE": "RIACHUELO", "AGÊNCIA": "DROGA5", "Valor/mês": 15000, "Tipo de Contrato": "Atribuição", "Sync": "Sim", "Report Mensal": "Sim", "Report Semanal": "Não", "Market Insights": "Não", "API": "Sim", "OBSERVAÇÕES": "", "ABERTURA DE REPORT": "0 de 12", "QUEM ABRIU": "-", "Valor_Limpo": 15000.0, "Abertura_Parsed": {"abertos": 0, "total": 12, "percentual": 0.0}}, {"CONTRATO ATÉ": "2025-01-01 00:00:00", "CLIENTE": "RPC", "AGÊNCIA": "NÃO TEM", "Valor/mês": 5759, "Tipo de Contrato": "Atribuição", "Sync": "Sim", "Report Mensal": "Não", "Report Semanal": "Não", "Market Insights": "Não", "API": "Sim", "OBSERVAÇÕES": "", "ABERTURA DE REPORT": "0 de 0", "QUEM ABRIU": "-", "Valor_Limpo": 5759.0, "Abertura_Parsed": {"abertos": 0, "total": 0, "percentual": 0}}, {"CONTRATO ATÉ": "2025-02-01 00:00:00", "CLIENTE": "SERASA", "AGÊNCIA": "NÃO TEM", "Valor/mês": "Valores não encontrados", "Tipo de Contrato": "Atribuição", "Sync": "Sim", "Report Mensal": "Sim", "Report Semanal": "Não", "Market Insights": "Sim", "API": "Não", "OBSERVAÇÕES": "", "ABERTURA DE REPORT": "0 de 4", "QUEM ABRIU": "-", "Valor_Limpo": 0.0, "Abertura_Parsed": {"abertos": 0, "total": 4, "percentual": 0.0}}, {"CONTRATO ATÉ": "2026-06-01 00:00:00", "CLIENTE": "SKY BANDA LARGA", "AGÊNCIA": "DENTSU | BLUE.AG", "Valor/mês": 24399.99, "Tipo de Contrato": "Atribuição", "Sync": "Sim", "Report Mensal": "Não", "Report Semanal": "Sim", "Market Insights": "Não", "API": "Não", "OBSERVAÇÕES": "", "ABERTURA DE REPORT": "3 de 18", "QUEM ABRIU": "Pedro Santos, Camilla Arnaud, Flávio", "Valor_Limpo": 24399.99, "Abertura_Parsed": {"abertos": 3, "total": 18, "percentual": 16.666666666666664}}, {"CONTRATO ATÉ": "2025-10-01 00:00:00", "CLIENTE": "SMILES", "AGÊNCIA": "CADASTRA", "Valor/mês": 8000, "Tipo de Contrato": "Atribuição", "Sync": "Sim", "Report Mensal": "Sim", "Report Semanal": "Não", "Market Insights": "Não", "API": "Não", "OBSERVAÇÕES": "", "ABERTURA DE REPORT": "5 de 7", "QUEM ABRIU": "Guilherme Pessini, Nathan Gonçalves, Milena Toillier, Lizandra, Helen Pereira", "Valor_Limpo": 8000.0, "Abertura_Parsed": {"abertos": 5, "total": 7, "percentual": 71.42857142857143}}, {"CONTRATO ATÉ": "2025-06-01 00:00:00", "CLIENTE": "STELLANTIS", "AGÊNCIA": "MUCHMORE", "Valor/mês": 34200, "Tipo de Contrato": "Atribuição", "Sync": "Sim", "Report Mensal": "Não", "Report Semanal": "Não", "Market Insights": "Sim", "API": "Sim", "OBSERVAÇÕES": "", "ABERTURA DE REPORT": "2 de 14", "QUEM ABRIU": "Leonardo Oliveira, Bruno Gonçalves", "Valor_Limpo": 34200.0, "Abertura_Parsed": {"abertos": 2, "total": 14, "percentual": 14.285714285714285}}, {"CONTRATO ATÉ": "2025-09-01 00:00:00", "CLIENTE": "STIHL", "AGÊNCIA": "AGÊNCIA ESCALA", "Valor/mês": 13000, "Tipo de Contrato": "Atribuição", "Sync": "Sim", "Report Mensal": "Sim", "Report Semanal": "Sim", "Market Insights": "Não", "API": "Sim", "OBSERVAÇÕES": "", "ABERTURA DE REPORT": "0 de 3", "QUEM ABRIU": "-", "Valor_Limpo": 13000.0, "Abertura_Parsed": {"abertos": 0, "total": 3, "percentual": 0.0}}, {"CONTRATO ATÉ": "2025-12-01 00:00:00", "CLIENTE": "SUPERSIM", "AGÊNCIA": "AGÊNCIA ESCALA", "Valor/mês": 65000, "Tipo de Contrato": "Atribuição", "Sync": "Sim", "Report Mensal": "Sim", "Report Semanal": "Sim", "Market Insights": "Não", "API": "Sim", "OBSERVAÇÕES": "", "ABERTURA DE REPORT": "15 de 21", "QUEM ABRIU": "Fábio Caetano, Alexsander Drews, Caio Japiassu, David Faria, Felipe Menezes, Gabriel Coutinho, Henrique Marcondes, Letícia Vinhas, Marcus Couto, Pedro Campos, Priscilla Nicolellis, Rafael Lopes, Cecília Bandeira, Igor Bleidorn, Nathalia Oliveira", "Valor_Limpo": 65000.0, "Abertura_Parsed": {"abertos": 15, "total": 21, "percentual": 71.42857142857143}}, {"CONTRATO ATÉ": "2026-02-01 00:00:00", "CLIENTE": "VERO", "AGÊNCIA": "SENSO PERFORMANCE", "Valor/mês": "Valores não encontrados", "Tipo de Contrato": "Atribuição", "Sync": "Não", "Report Mensal": "Não", "Report Semanal": "Não", "Market Insights": "Não", "API": "Não", "OBSERVAÇÕES": "", "ABERTURA DE REPORT": "6 de 6", "QUEM ABRIU": "Brendow Freire, Daniela C, Danilo M, Hamilton Guimarães, Natalia Di, Paulo Guimarães\n", "Valor_Limpo": 0.0, "Abertura_Parsed": {"abertos": 6, "total": 6, "percentual": 100.0}}, {"CONTRATO ATÉ": "2025-12-01 00:00:00", "CLIENTE": "VOLKSWAGEN", "AGÊNCIA": "ALMAP", "Valor/mês": 30000, "Tipo de Contrato": "Atribuição", "Sync": "Sim", "Report Mensal": "Sim", "Report Semanal": "Sim", "Market Insights": "Não", "API": "Sim", "OBSERVAÇÕES": "", "ABERTURA DE REPORT": "1 de 16", "QUEM ABRIU": "Thatiana Nogueira", "Valor_Limpo": 30000.0, "Abertura_Parsed": {"abertos": 1, "total": 16, "percentual": 6.25}}, {"CONTRATO ATÉ": "2026-02-01 00:00:00", "CLIENTE": "YPÊ", "AGÊNCIA": "ZMES", "Valor/mês": 13340, "Tipo de Contrato": "Atribuição", "Sync": "Não", "Report Mensal": "Não", "Report Semanal": "Não", "Market Insights": "Não", "API": "Não", "OBSERVAÇÕES": "", "ABERTURA DE REPORT": "0 de 0", "QUEM ABRIU": "-", "Valor_Limpo": 13340.0, "Abertura_Parsed": {"abertos": 0, "total": 0, "percentual": 0}}];
+        // ==================== CONFIGURAÇÃO GOOGLE SHEETS ====================
+        // COLE SUA URL DO GOOGLE APPS SCRIPT AQUI:
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxr2wlCTKoKMf1U_7pTcgzJe_tsuSPJ1EuL8VX-EsPs-uX-V1q-ZO77vWWVKaJHxotDCA/exec';
+        
+        // Atualização automática (opcional - em minutos):
+        const AUTO_REFRESH_MINUTES = 5; // 0 = desabilitado
+        // ===================================================================
+
+        let isLoadingData = false;
+        
+        // Função para carregar dados do Google Sheets
+        async function loadDataFromGoogleSheets() {
+            if (isLoadingData) return;
+            
+            try {
+                isLoadingData = true;
+                console.log('🔄 Carregando dados do Google Sheets...');
+                
+                const response = await fetch(GOOGLE_SHEETS_URL);
+                
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
+
+                const result = await response.json();
+
+                if (!result.success) {
+                    throw new Error(result.error || 'Erro ao carregar dados');
+                }
+
+                console.log('✅ Dados recebidos:', result.data.length, 'registros');
+                
+                // FILTRAR: Remover linhas vazias (sem cliente)
+                const dadosFiltrados = result.data.filter(item => {
+                    const cliente = item['CLIENTE'];
+                    return cliente && cliente !== 'nan' && String(cliente).trim() !== '';
+                });
+                
+                console.log('✅ Clientes válidos:', dadosFiltrados.length);
+                
+                // Processar e preparar os dados do Sheets
+                clientesData = dadosFiltrados.map(cliente => {
+                    // Processar valor (formato: "R$ 30.000,00")
+                    let valorLimpo = 0;
+                    const valorStr = String(cliente['Valor/mês'] || '0');
+                    
+                    if (valorStr && valorStr !== 'Valores não encontrados' && valorStr !== 'Valor não encontrado' && valorStr !== 'nan') {
+                        // Remove "R$", espaços, pontos de milhar, e converte vírgula para ponto
+                        const valorNumerico = valorStr
+                            .replace('R$', '')
+                            .replace(/\s/g, '')
+                            .replace(/\./g, '')  // Remove pontos de milhar
+                            .replace(',', '.');   // Converte vírgula decimal para ponto
+                        
+                        valorLimpo = parseFloat(valorNumerico) || 0;
+                    }
+                    cliente.Valor_Limpo = valorLimpo;
+                    
+                    // Processar abertura de report (dados antigos - mantido para compatibilidade)
+                    let abertos = 0;
+                    let total = 0;
+                    let percentual = 0;
+                    
+                    const aberturaStr = String(cliente['ABERTURA DE REPORT'] || '0 de 0');
+                    const match = aberturaStr.match(/(\d+)\s*de\s*(\d+)/);
+                    if (match) {
+                        abertos = parseInt(match[1]) || 0;
+                        total = parseInt(match[2]) || 0;
+                        percentual = total > 0 ? (abertos / total) * 100 : 0;
+                    }
+                    
+                    // NOVAS COLUNAS: Quantidade de pessoas (nomes exatos da planilha)
+                    const qtdEnviado = parseInt(cliente['Qtd de pessoas (enviado) - report '] || 0) || 0;  // Note o espaço no final
+                    const qtdAcessaram = parseInt(cliente['Qntd de pessoas (acessaram) - reports'] || 0) || 0;  // "Qntd" com n
+                    const qtdNaoAcessaram = parseInt(cliente['Diferença pessoas - reports'] || 0) || 0;  // "Diferença" maiúscula
+                    
+                    // Calcular taxa de abertura por pessoas (prioridade)
+                    let taxaAberturaPessoas = 0;
+                    if (qtdEnviado > 0) {
+                        taxaAberturaPessoas = (qtdAcessaram / qtdEnviado) * 100;
+                    }
+                    
+                    // Usar taxa de pessoas se disponível, senão usar taxa antiga de reports
+                    const taxaFinal = qtdEnviado > 0 ? taxaAberturaPessoas : percentual;
+                    
+                    cliente.Abertura_Parsed = {
+                        abertos: abertos,
+                        total: total,
+                        percentual: taxaFinal,
+                        // Novos campos
+                        qtdEnviado: qtdEnviado,
+                        qtdAcessaram: qtdAcessaram,
+                        qtdNaoAcessaram: qtdNaoAcessaram
+                    };
+                    
+                    return cliente;
+                });
+                
+                console.log('✅ Dados processados:', clientesData.length, 'clientes');
+                
+                // Reinicializar dashboard
+                init();
+                
+                // Atualizar timestamp
+                updateTimestamp();
+                
+            } catch (error) {
+                console.error('❌ Erro ao carregar dados:', error);
+                alert('Erro ao conectar com Google Sheets: ' + error.message + '\n\nVerifique se:\n1. A URL do Apps Script está correta\n2. O script foi implantado corretamente\n3. Você tem permissão para acessar a planilha');
+            } finally {
+                isLoadingData = false;
+            }
+        }
+        
+        function updateTimestamp() {
+            const now = new Date();
+            const dateStr = `${String(now.getDate()).padStart(2, '0')}-${String(now.getMonth() + 1).padStart(2, '0')}-${now.getFullYear()}`;
+            const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            document.querySelector('.header-info .date').textContent = `Atualizado em ${dateStr} às ${timeStr}`;
+        }
+
+
+    let clientesData = [];
     
     let filteredData = [];
     let currentPage = 1;
     const itemsPerPage = 10;
 
     function init() {
-        console.log('Total de clientes:', clientesData.length);
+        if (!clientesData || clientesData.length === 0) {
+            console.log('⏳ Aguardando dados do Google Sheets...');
+            return;
+        }
+        
+        console.log('✅ Inicializando dashboard com', clientesData.length, 'clientes');
         
         // Processar dados
         clientesData.forEach(cliente => {
@@ -799,9 +948,15 @@
 
     function updateKPIs() {
         const receitaTotal = filteredData.reduce((sum, c) => sum + c.valorNumerico, 0);
-        const clientesComReports = filteredData.filter(c => c.Abertura_Parsed.total > 0);
-        const taxaEngajamento = clientesComReports.length > 0
-            ? clientesComReports.reduce((sum, c) => sum + c.Abertura_Parsed.percentual, 0) / clientesComReports.length
+        
+        // Calcular taxa de engajamento baseada em PESSOAS (não reports)
+        const clientesComDados = filteredData.filter(c => 
+            c.Abertura_Parsed && 
+            c.Abertura_Parsed.qtdEnviado > 0
+        );
+        
+        const taxaEngajamento = clientesComDados.length > 0
+            ? clientesComDados.reduce((sum, c) => sum + c.Abertura_Parsed.percentual, 0) / clientesComDados.length
             : 0;
         const clientesRisco = filteredData.filter(c => c.emRisco).length;
 
@@ -924,7 +1079,10 @@
     }
 
     function updateCharts() {
-        const comReports = clientesData.filter(c => c.Abertura_Parsed.total > 0);
+        // Filtrar clientes com dados de engajamento (qtdEnviado > 0)
+        const comReports = clientesData.filter(c => 
+            c.Abertura_Parsed && c.Abertura_Parsed.qtdEnviado > 0
+        );
         
         // Top Engajados
         const topEngajados = [...comReports].sort((a, b) => b.Abertura_Parsed.percentual - a.Abertura_Parsed.percentual).slice(0, 10);
@@ -936,7 +1094,7 @@
                     <div class="ranking-info">
                         <div>
                             <strong>${c.CLIENTE}</strong><br>
-                            <small>${c.Abertura_Parsed.abertos}/${c.Abertura_Parsed.total} abriram o report</small>
+                            <small>${c.Abertura_Parsed.qtdNaoAcessaram} não acessaram</small>
                         </div>
                     </div>
                     <div class="ranking-score">${c.Abertura_Parsed.percentual.toFixed(0)}%</div>
@@ -952,7 +1110,7 @@
                 <div class="ranking-info">
                     <div>
                         <strong>${c.CLIENTE}</strong><br>
-                        <small>${c.Abertura_Parsed.abertos}/${c.Abertura_Parsed.total} abriram o report</small>
+                        <small>${c.Abertura_Parsed.qtdNaoAcessaram} não acessaram</small>
                     </div>
                 </div>
                 <div class="ranking-score" style="color: var(--laranja)">${c.Abertura_Parsed.percentual.toFixed(0)}%</div>
@@ -1187,8 +1345,12 @@
                         <value>${cliente.Abertura_Parsed.percentual.toFixed(1)}%</value>
                     </div>
                     <div class="detail-item">
-                        <label>Reports Abertos</label>
-                        <value>${cliente.Abertura_Parsed.abertos} de ${cliente.Abertura_Parsed.total}</value>
+                        <label>Pessoas que Acessaram</label>
+                        <value>${cliente.Abertura_Parsed.qtdAcessaram} de ${cliente.Abertura_Parsed.qtdEnviado}</value>
+                    </div>
+                    <div class="detail-item">
+                        <label style="color: #f44336;">Pessoas que NÃO Acessaram</label>
+                        <value style="color: #f44336; font-weight: bold;">${cliente.Abertura_Parsed.qtdNaoAcessaram} pessoas</value>
                     </div>
                 </div>
                 <div class="detail-item" style="margin-top: 15px;">
@@ -1256,6 +1418,21 @@
     }
 
     init();
+
+        // Verificar configuração e carregar dados
+        if (GOOGLE_SHEETS_URL === 'COLE_SUA_URL_AQUI') {
+            document.getElementById('tableBody').innerHTML = '<tr><td colspan="8" style="text-align:center;padding:50px;color:#f44336;"><h3>⚠️ CONFIGURAÇÃO NECESSÁRIA</h3><p style="margin-top:15px;">Configure a URL do Google Apps Script no código HTML.<br>Procure por: <code>const GOOGLE_SHEETS_URL</code></p></td></tr>';
+        } else {
+            // Sempre carregar do Google Sheets
+            loadDataFromGoogleSheets();
+        }
+        
+        // Auto-refresh (se configurado)
+        if (AUTO_REFRESH_MINUTES > 0 && GOOGLE_SHEETS_URL !== 'COLE_SUA_URL_AQUI') {
+            setInterval(loadDataFromGoogleSheets, AUTO_REFRESH_MINUTES * 60 * 1000);
+            console.log(`✅ Auto-refresh configurado para ${AUTO_REFRESH_MINUTES} minutos`);
+        }
+
     </script>
 </body>
 </html>
