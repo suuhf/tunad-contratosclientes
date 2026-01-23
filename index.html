@@ -704,14 +704,14 @@
         <table>
             <thead>
                 <tr>
-                    <th onclick="sortTable(0)">Cliente</th>
-                    <th onclick="sortTable(1)">Agência</th>
-                    <th onclick="sortTable(2)">Contrato Até</th>
-                    <th onclick="sortTable(3)">Valor/Mês</th>
-                    <th onclick="sortTable(4)">Tipo</th>
-                    <th>Engajamento</th>
-                    <th>Serviços</th>
-                    <th>Status</th>
+                    <th onclick="sortTable(0)" style="cursor:pointer;">Cliente ⇅</th>
+                    <th onclick="sortTable(1)" style="cursor:pointer;">Agência ⇅</th>
+                    <th onclick="sortTable(2)" style="cursor:pointer;">Contrato Até ⇅</th>
+                    <th onclick="sortTable(3)" style="cursor:pointer;">Valor/Mês ⇅</th>
+                    <th onclick="sortTable(4)" style="cursor:pointer;">Tipo ⇅</th>
+                    <th onclick="sortTable(5)" style="cursor:pointer;">Engajamento ⇅</th>
+                    <th onclick="sortTable(6)" style="cursor:pointer;">Serviços ⇅</th>
+                    <th onclick="sortTable(7)" style="cursor:pointer;">Status ⇅</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
@@ -784,7 +784,7 @@
     <script>
         // ==================== CONFIGURAÇÃO GOOGLE SHEETS ====================
         // COLE SUA URL DO GOOGLE APPS SCRIPT AQUI:
-        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbz36gjwUiKF2JP9gjx-wkdcOBFkKejfoga5gEjTUHEU1PdKBY5ZbusXklC1VLRNCMOVIQ/exec';
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzkMMi2Q-R9ZSpE30ALHjJvrz9HLW5IemlFUE-Kjx2xR2UR3VV6kq4CKq8iZ_1PbGoDzg/exec';
         
         // Atualização automática (opcional - em minutos):
         const AUTO_REFRESH_MINUTES = 5; // 0 = desabilitado
@@ -1526,14 +1526,57 @@
         filteredData.sort((a, b) => {
             let aVal, bVal;
             switch(columnIndex) {
-                case 0: aVal = a.CLIENTE; bVal = b.CLIENTE; break;
-                case 1: aVal = a['AGÊNCIA']; bVal = b['AGÊNCIA']; break;
-                case 2: aVal = new Date(a['CONTRATO ATÉ']); bVal = new Date(b['CONTRATO ATÉ']); break;
-                case 3: aVal = a.valorNumerico; bVal = b.valorNumerico; break;
-                case 4: aVal = a['Tipo de Contrato']; bVal = b['Tipo de Contrato']; break;
-                default: return 0;
+                case 0: // Cliente
+                    aVal = a.CLIENTE || '';
+                    bVal = b.CLIENTE || '';
+                    break;
+                case 1: // Agência
+                    aVal = a.AGENCIA || '';
+                    bVal = b.AGENCIA || '';
+                    break;
+                case 2: // Contrato Até
+                    aVal = new Date(a['CONTRATO ATÉ']);
+                    bVal = new Date(b['CONTRATO ATÉ']);
+                    break;
+                case 3: // Valor/Mês
+                    aVal = a.valorNumerico || 0;
+                    bVal = b.valorNumerico || 0;
+                    break;
+                case 4: // Tipo de Contrato
+                    aVal = a['Tipo de Contrato'] || '';
+                    bVal = b['Tipo de Contrato'] || '';
+                    break;
+                case 5: // Engajamento (Taxa de Abertura)
+                    aVal = a.Abertura_Parsed ? a.Abertura_Parsed.percentual : 0;
+                    bVal = b.Abertura_Parsed ? b.Abertura_Parsed.percentual : 0;
+                    break;
+                case 6: // Serviços (quantidade de serviços ativos)
+                    const servicosA = [
+                        a.Sync === 'Sim' ? 1 : 0,
+                        a['Report Mensal'] === 'Sim' ? 1 : 0,
+                        a['Report Semanal'] === 'Sim' ? 1 : 0,
+                        a['Market Insights'] === 'Sim' ? 1 : 0,
+                        a.API === 'Sim' ? 1 : 0
+                    ].reduce((sum, val) => sum + val, 0);
+                    const servicosB = [
+                        b.Sync === 'Sim' ? 1 : 0,
+                        b['Report Mensal'] === 'Sim' ? 1 : 0,
+                        b['Report Semanal'] === 'Sim' ? 1 : 0,
+                        b['Market Insights'] === 'Sim' ? 1 : 0,
+                        b.API === 'Sim' ? 1 : 0
+                    ].reduce((sum, val) => sum + val, 0);
+                    aVal = servicosA;
+                    bVal = servicosB;
+                    break;
+                case 7: // Status (Em Risco vs Seguro)
+                    aVal = a.emRisco ? 1 : 0; // Em risco primeiro
+                    bVal = b.emRisco ? 1 : 0;
+                    break;
+                default: 
+                    return 0;
             }
 
+            // Comparação
             if (aVal < bVal) return direction === 'asc' ? -1 : 1;
             if (aVal > bVal) return direction === 'asc' ? 1 : -1;
             return 0;
