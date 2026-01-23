@@ -784,7 +784,7 @@
     <script>
         // ==================== CONFIGURAÇÃO GOOGLE SHEETS ====================
         // COLE SUA URL DO GOOGLE APPS SCRIPT AQUI:
-        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxr2wlCTKoKMf1U_7pTcgzJe_tsuSPJ1EuL8VX-EsPs-uX-V1q-ZO77vWWVKaJHxotDCA/exec';
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbz36gjwUiKF2JP9gjx-wkdcOBFkKejfoga5gEjTUHEU1PdKBY5ZbusXklC1VLRNCMOVIQ/exec';
         
         // Atualização automática (opcional - em minutos):
         const AUTO_REFRESH_MINUTES = 5; // 0 = desabilitado
@@ -867,15 +867,59 @@
                     // Usar taxa de pessoas se disponível, senão usar taxa antiga de reports
                     const taxaFinal = qtdEnviado > 0 ? taxaAberturaPessoas : percentual;
                     
+                    // NOVAS MÉTRICAS: Acesso à Ferramenta
+                    const usuariosAcessaram = String(cliente['Usuários que acessaram a ferramenta'] || '');
+                    const acessoRecente = cliente['Acesso mais recente'] || null;
+                    const numUsuarios = parseInt(cliente['Número de usuários'] || 0) || 0;
+                    const qtdUsuariosAcessaram = parseInt(cliente['Qtd de usuários que acessaram'] || 0) || 0;
+                    const qtdUsuariosNaoAcessam = parseInt(cliente['Qtd de usuários que não acessam'] || 0) || 0;
+                    
+                    // Calcular taxa de acesso à ferramenta
+                    let taxaAcessoFerramenta = 0;
+                    if (numUsuarios > 0) {
+                        taxaAcessoFerramenta = (qtdUsuariosAcessaram / numUsuarios) * 100;
+                    }
+                    
+                    // Gerar insight automático
+                    let insight = '';
+                    const diasDesdeAcesso = acessoRecente ? Math.floor((new Date() - new Date(acessoRecente)) / (1000 * 60 * 60 * 24)) : 999;
+                    
+                    if (taxaFinal < 20 && taxaAcessoFerramenta < 40) {
+                        insight = '🔴 Baixo engajamento em reports e ferramenta - atenção urgente!';
+                    } else if (diasDesdeAcesso > 30) {
+                        insight = '⚠️ Sem acesso à ferramenta há mais de 30 dias';
+                    } else if (qtdNaoAcessaram > qtdAcessaram * 2) {
+                        insight = '📊 Maioria não abre reports - revisar conteúdo';
+                    } else if (taxaAcessoFerramenta > 70 && taxaFinal > 50) {
+                        insight = '✅ Excelente engajamento em reports e ferramenta!';
+                    } else if (taxaFinal > 50) {
+                        insight = '📈 Bom engajamento com reports';
+                    } else if (taxaAcessoFerramenta > 60) {
+                        insight = '💻 Ferramenta bem utilizada';
+                    } else {
+                        insight = '⚡ Engajamento moderado - oportunidade de melhoria';
+                    }
+                    
                     cliente.Abertura_Parsed = {
                         abertos: abertos,
                         total: total,
                         percentual: taxaFinal,
-                        // Novos campos
                         qtdEnviado: qtdEnviado,
                         qtdAcessaram: qtdAcessaram,
                         qtdNaoAcessaram: qtdNaoAcessaram
                     };
+                    
+                    cliente.Ferramenta_Metrics = {
+                        usuariosAcessaram: usuariosAcessaram,
+                        acessoRecente: acessoRecente,
+                        numUsuarios: numUsuarios,
+                        qtdUsuariosAcessaram: qtdUsuariosAcessaram,
+                        qtdUsuariosNaoAcessam: qtdUsuariosNaoAcessam,
+                        taxaAcessoFerramenta: taxaAcessoFerramenta,
+                        diasDesdeUltimoAcesso: diasDesdeAcesso
+                    };
+                    
+                    cliente.Insight = insight;
                     
                     return cliente;
                 });
@@ -1079,6 +1123,18 @@
     }
 
     function updateCharts() {
+        // Verificar se há dados
+        if (!clientesData || clientesData.length === 0) {
+            // Mensagens de carregamento
+            const loadingMsg = '<div style="padding:40px;text-align:center;color:#999;"><div style="font-size:24px;margin-bottom:10px;">📊</div><div>Carregando dados...</div></div>';
+            document.getElementById('topEngajados').innerHTML = loadingMsg;
+            document.getElementById('topMenosEngajados').innerHTML = loadingMsg;
+            document.getElementById('topVencendo').innerHTML = loadingMsg;
+            document.getElementById('receitaTipo').innerHTML = loadingMsg;
+            document.getElementById('distribuicaoServicos').innerHTML = loadingMsg;
+            return;
+        }
+        
         // Filtrar clientes com dados de engajamento (qtdEnviado > 0)
         const comReports = clientesData.filter(c => 
             c.Abertura_Parsed && c.Abertura_Parsed.qtdEnviado > 0
@@ -1086,7 +1142,11 @@
         
         // Top Engajados
         const topEngajados = [...comReports].sort((a, b) => b.Abertura_Parsed.percentual - a.Abertura_Parsed.percentual).slice(0, 10);
-        document.getElementById('topEngajados').innerHTML = topEngajados.map((c, i) => {
+        
+        if (topEngajados.length === 0) {
+            document.getElementById('topEngajados').innerHTML = '<div style="padding:40px;text-align:center;color:#999;">Nenhum dado de engajamento disponível</div>';
+        } else {
+            document.getElementById('topEngajados').innerHTML = topEngajados.map((c, i) => {
             const rankClass = i === 0 ? 'top-1' : i === 1 ? 'top-2' : i === 2 ? 'top-3' : '';
             return `
                 <div class="ranking-item ${rankClass}">
@@ -1102,9 +1162,15 @@
             `;
         }).join('');
 
+        }
+        
         // Top Menos Engajados
         const topMenos = [...comReports].sort((a, b) => a.Abertura_Parsed.percentual - b.Abertura_Parsed.percentual).slice(0, 10);
-        document.getElementById('topMenosEngajados').innerHTML = topMenos.map((c, i) => `
+        
+        if (topMenos.length === 0) {
+            document.getElementById('topMenosEngajados').innerHTML = '<div style="padding:40px;text-align:center;color:#999;">Nenhum dado de engajamento disponível</div>';
+        } else {
+            document.getElementById('topMenosEngajados').innerHTML = topMenos.map((c, i) => `
             <div class="ranking-item">
                 <div class="ranking-number" style="background: var(--laranja)">${i + 1}</div>
                 <div class="ranking-info">
@@ -1116,6 +1182,7 @@
                 <div class="ranking-score" style="color: var(--laranja)">${c.Abertura_Parsed.percentual.toFixed(0)}%</div>
             </div>
         `).join('');
+        }
 
         // Receita por Tipo
         const receitaPorTipo = {};
@@ -1337,8 +1404,19 @@
                 </div>
             </div>
 
+            <!-- Insight do Cliente -->
+            <div class="detail-section" style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-left: 4px solid var(--azul); padding: 15px; margin-bottom: 20px; border-radius: 8px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 20px;">💡</span>
+                    <div style="flex: 1;">
+                        <strong style="font-size: 12px; color: #666; text-transform: uppercase;">Insight do Cliente</strong>
+                        <p style="margin: 5px 0 0 0; font-size: 14px; color: var(--preto); font-weight: 600;">${cliente.Insight}</p>
+                    </div>
+                </div>
+            </div>
+
             <div class="detail-section">
-                <h3>Engajamento com Reports</h3>
+                <h3>📊 Engajamento com Reports</h3>
                 <div class="detail-grid">
                     <div class="detail-item">
                         <label>Taxa de Abertura</label>
@@ -1356,6 +1434,54 @@
                 <div class="detail-item" style="margin-top: 15px;">
                     <label>Quem Abriu os Reports</label>
                     <value>${quemAbriu}</value>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <h3>💻 Acesso à Ferramenta</h3>
+                <div class="detail-grid" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="detail-item">
+                        <label>Último Acesso</label>
+                        <value>${cliente.Ferramenta_Metrics.acessoRecente ? 
+                            new Date(cliente.Ferramenta_Metrics.acessoRecente).toLocaleDateString('pt-BR') + ' (' + 
+                            cliente.Ferramenta_Metrics.diasDesdeUltimoAcesso + ' dias atrás)' 
+                            : 'Sem registro'}</value>
+                    </div>
+                    <div class="detail-item">
+                        <label>Taxa de Uso</label>
+                        <value style="color: ${cliente.Ferramenta_Metrics.taxaAcessoFerramenta > 50 ? '#4caf50' : '#f44336'}; font-weight: bold;">
+                            ${cliente.Ferramenta_Metrics.taxaAcessoFerramenta.toFixed(1)}%
+                        </value>
+                    </div>
+                    <div class="detail-item">
+                        <label>Usuários Ativos</label>
+                        <value>${cliente.Ferramenta_Metrics.qtdUsuariosAcessaram} de ${cliente.Ferramenta_Metrics.numUsuarios} usuários</value>
+                    </div>
+                    <div class="detail-item">
+                        <label style="color: #f44336;">Usuários Inativos</label>
+                        <value style="color: #f44336;">${cliente.Ferramenta_Metrics.qtdUsuariosNaoAcessam} usuários</value>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <h3>👥 Usuários que Acessaram a Ferramenta</h3>
+                <div style="max-height: 200px; overflow-y: auto; background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                    ${cliente.Ferramenta_Metrics.usuariosAcessaram ? 
+                        cliente.Ferramenta_Metrics.usuariosAcessaram.split('\n').filter(u => u.trim()).map(usuario => {
+                            const match = usuario.match(/(.+?)\s*\((.+?)\)/);
+                            if (match) {
+                                const email = match[1].trim();
+                                const data = match[2].trim();
+                                return `<div style="padding: 8px; border-bottom: 1px solid #dee2e6; display: flex; justify-content: space-between;">
+                                    <span style="color: var(--azul); font-weight: 500;">${email}</span>
+                                    <span style="color: #666; font-size: 12px;">${data}</span>
+                                </div>`;
+                            }
+                            return `<div style="padding: 8px; border-bottom: 1px solid #dee2e6;">${usuario}</div>`;
+                        }).join('')
+                        : '<p style="color: #999; font-style: italic;">Nenhum usuário acessou recentemente</p>'
+                    }
                 </div>
             </div>
 
